@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,6 +52,19 @@ public class CustomerAPI {
 			
 		return response;
 		
+	}
+	
+	
+	@PutMapping("/{customerId}")
+	public ResponseEntity<?> putCustomer (@RequestBody Customer newCustomer, 
+			@PathVariable("customerId") long customerId){
+		
+		if (newCustomer.getId() != customerId || newCustomer.getName() == null || newCustomer.getEmail() == null ) {
+			return ResponseEntity.badRequest().build();
+		}
+		
+		newCustomer = repo.save(newCustomer);
+		return ResponseEntity.ok().build();
 	}
 	
 	
